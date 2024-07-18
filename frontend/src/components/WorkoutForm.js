@@ -34,7 +34,7 @@ const WorkoutForm = ({ editWorkout, setEditWorkout }) => {
     let response;
     let json;
     if (editWorkout) {
-      response = await fetch(`/api/workouts/${editWorkout._id}`, {
+      response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/workouts/${editWorkout._id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -54,7 +54,7 @@ const WorkoutForm = ({ editWorkout, setEditWorkout }) => {
         setEditWorkout(null)
       }
     } else {
-      response = await fetch("/api/workouts", {
+      response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/workouts`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
