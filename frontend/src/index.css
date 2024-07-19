@@ -71,7 +71,7 @@ header a {
   color: #333;
 }
 
-.workout-details .function-container button{
+.workout-details .function-container button {
   background: #f1f1f1;
   border: none;
   padding: 10px;
@@ -135,6 +135,7 @@ nav button {
   font-family: "Poppins";
   font-size: 1em;
   margin-left: 10px;
+  width: fit-content;
 }
 form.signup,
 form.login {
@@ -144,25 +145,25 @@ form.login {
   background: #fff;
   border-radius: 4px;
 }
-.function-container{
+.function-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.no-workout{
+.no-workout {
   text-align: center;
   margin-top: 20px;
   font-size: 1.5em;
 }
 
 @media (max-width: 1000px) {
-  header a{
+  header a {
     font-size: 0.7em;
   }
   .home {
     grid-template-columns: 1fr;
   }
-  .create{
+  .create {
     max-width: 400px;
     width: 100%;
     margin: 20px auto;
@@ -181,5 +182,18 @@ form.login {
 
   h4 {
     font-size: 1em;
+  }
+  .logout-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  nav div span {
+    order: 2;
+    font-size: 0.9em;
+  }
+  nav div button {
+    order: 1;
+    margin-left: 0;
   }
 }
