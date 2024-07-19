@@ -1,5 +1,0 @@
-{
-    "env": {
-      "REACT_APP_BASE_URL": "https://api-workout-buddy-hazel.vercel.app"
-    }
-  }
