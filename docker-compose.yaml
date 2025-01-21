@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  backend:
+    build: ./backend
+    image: backend:v1
+    container_name: backend-container
+    ports:
+      - '4000:4000'
+    volumes:
+      - C:\Users\user\Documents\Workshop\Node js\mern-stack\backend:/app
+      - /app/node_modules
+  frontend:
+    build: ./frontend
+    image: frontend:v1
+    container_name: frontend-container
+    ports: 
+      - '3000:3000'
+    volumes:
+      - C:\Users\user\Documents\Workshop\Node js\mern-stack\frontend:/app
+      - /app/node_modules
+    stdin_open: true
+    tty: true

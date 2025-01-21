@@ -5,7 +5,7 @@ const requireAuth = async (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization) {
-    res.status(401).json({ error: "Authorization is required" });
+    return res.status(401).json({ error: "Authorization is required" });
   }
 
   const token = authorization.split(" ")[1];
@@ -14,8 +14,11 @@ const requireAuth = async (req, res, next) => {
     req.user = await User.findOne({ _id }).select("_id");
     next();
   } catch (error) {
-    console.log(error);
-    res.status(401).json({ error: "Request is not authorized" });
+    //console.log(error);
+    if (error instanceof jwt.TokenExpiredError) {
+      return res.status(401).json({ error: "Token has expired, please log in again" });
+    }
+    res.status(401).json({ error: "Invalid token or unauthorized request" });
   }
 };
 

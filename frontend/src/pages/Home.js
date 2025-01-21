@@ -45,7 +45,7 @@ const Home = () => {
       <div className="workouts">
         {loading ? (
           <div>Loading...</div>
-        ) : workouts.length > 0 ? (
+        ) : workouts?.length > 0 ? (
           workouts.map((workout) => (
             <WorkoutDetails
               key={workout._id}
