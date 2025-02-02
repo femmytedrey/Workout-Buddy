@@ -42,22 +42,7 @@ Perfect for developers looking to understand MERN stack development and docker w
 * Devops: Docker, Docker Compose, Docker Swarm, Volumes management for data persistence
 * Development Tools: Nodemon for hot-reloading, Environment Variables management, and more.
 
-### **Container Structure**
-workout-buddy/
-├── frontend (React - Port 3000)
-│   ├── Context Providers
-│   │   ├── AuthContext
-│   │   └── WorkoutsContext
-│   └── Protected Routes
-│
-├── backend (Node/Express - Port 4000)
-│   ├── routes/
-│   │   ├── user.js
-│   │   └── workouts.js
-│   ├── middleware/
-│   │   └── requireAuth.js
-│   └── app.js
-**Data Flow**
+### **Data Flow**
 1. Frontend makes authenticated API calls
 2. Backend validates JWT tokens
 3. Protected routes handle workout operations
@@ -91,17 +76,17 @@ workout-buddy/
 
     # Deploy the stack
     docker stack deploy -c docker-compose.prod.yaml workout-buddy
-    
-**Production Setup**
-    * Initialize swarm:
+
+### **Production Setup**
+    1 Initialize swarm:
     ```bash
     docker swarm init
     ```
-    * Deploy the stack:
+    2 Deploy the stack:
     ```bash
     docker stack deploy -c docker-compose.prod.yaml workout-buddy
     ```
-    * Stop the production environment:
+    3 Stop the production environment:
     ```bash
     docker stack rm workout-buddy
     ```
@@ -109,7 +94,7 @@ workout-buddy/
     docker swarm leave --force
     ```
 
-**Access Points**
+### **Access Points**
     * Frontend: http://localhost:3000
     * Backend: http://localhost:4000
     * MongoDB: mongodb://localhost:27017
