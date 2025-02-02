@@ -1,0 +1,16 @@
+# Node
+node_modules
+**/node_modules
+
+# Environment files
+.env
+**/.env
+.env.*
+**/.env.*
+**/secrets
+
+# Development
+.git
+.gitignore
+.DS_Store
+

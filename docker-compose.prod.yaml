@@ -1,9 +1,6 @@
 version: "3.8"
 services:
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
     image: femidev/workout-buddy:frontend-v1
     deploy:
       resources:
@@ -11,27 +8,14 @@ services:
           memory: 1G
         reservations:
           memory: 512M
-    container_name: frontend-container
     ports:
       - '3000:3000'
-    env_file:
-      - ./frontend/.env
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
     depends_on:
       - backend
     secrets:
       - react_app_base_url
-    environment:
-      - WATCHPACK_POLLING=true
-    stdin_open: true
-    tty: true
 
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
     image: femidev/workout-buddy:backend-v1
     deploy:
       resources:
@@ -41,12 +25,6 @@ services:
           memory: 512M
     ports:
       - "4000:4000"
-    env_file:
-      - ./backend/.env
-    container_name: backend-container
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
     depends_on:
       - mongodb
     secrets:
@@ -57,9 +35,6 @@ services:
 
   mongodb:
     image: mongo:latest
-    container_name: mongodb-container
-    ports:
-      - "27017:27017"
     volumes:
       - mongodb_data:/data/db
 
