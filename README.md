@@ -78,21 +78,15 @@ Perfect for developers looking to understand MERN stack development and docker w
     docker stack deploy -c docker-compose.prod.yaml workout-buddy
 
 ### **Production Setup**
-    1 Initialize swarm:
-    ```bash
+    # Initialize swarm:
     docker swarm init
-    ```
-    2 Deploy the stack:
-    ```bash
+
+    # Deploy the stack:
     docker stack deploy -c docker-compose.prod.yaml workout-buddy
-    ```
-    3 Stop the production environment:
-    ```bash
+
+    # Stop the production environment:
     docker stack rm workout-buddy
-    ```
-    ```bash
     docker swarm leave --force
-    ```
 
 ### **Access Points**
     * Frontend: http://localhost:3000
