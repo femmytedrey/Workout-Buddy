@@ -5,7 +5,7 @@ A MERN stack application that allows users to create and track their workouts.
 This project demonstrates the implementation of user authentication, CRUD operations, and containerization using Docker.
 
 ### **Live Demo**
-[*Visit Workout Buddy*](https://workout-buddy-hazel.vercel.app/)
+[*Visit Workout Buddy*](https://mini-workout-buddy.vercel.app/)
 
 ### **What is Workout Buddy?**
 Workout Buddy serves as your digital fitness companion, allowing you to:
