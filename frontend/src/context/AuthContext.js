@@ -12,6 +12,8 @@ const AuthReducer = (state, action) => {
       return {
         user: null,
       };
+    case "SET_LOADING":
+      return { ...state, isLoading: action.payload };
     default:
       return state;
   }
@@ -20,15 +22,35 @@ const AuthReducer = (state, action) => {
 export const AuthContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AuthReducer, {
     user: null,
+    isLoading: true,
   });
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
+    const checkAuth = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_BASE_URL}/api/user/check-auth`,
+          {
+            credentials: "include",
+          }
+        );
+        if (response.ok) {
+          const user = await response.json();
+          dispatch({ type: "LOGIN", payload: user });
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        dispatch({ type: "SET_LOADING", payload: false });
+      }
+    };
 
-    if (user) {
-      dispatch({ type: "LOGIN", payload: user });
-    }
+    checkAuth();
   }, []);
+
+  if (state.isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <AuthContext.Provider value={{ ...state, dispatch }}>

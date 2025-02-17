@@ -12,9 +12,7 @@ const WorkoutDetails = ({ workout, handleEdit }) => {
     }
     const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/workouts/${workout._id}`, {
       method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-      },
+      credentials: 'include',
     });
 
     const json = await response.json();

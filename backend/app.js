@@ -4,6 +4,7 @@ const workoutRoutes = require("./routes/workouts");
 const userRoutes = require("./routes/user.js");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const cookieParser = require('cookie-parser');
 
 //config
 dotenv.config();
@@ -23,12 +24,16 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.use(cookieParser());
 app.use((req, res, next) => {
   console.log(req.path, req.method);
   next();
 });
 
 //routes
+app.get("/", (req, res) => {
+  res.json({ mssg: "Welcome to the app" });
+});
 app.use("/api/workouts", workoutRoutes);
 app.use("/api/user", userRoutes);
 

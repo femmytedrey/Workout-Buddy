@@ -38,8 +38,8 @@ const WorkoutForm = ({ editWorkout, setEditWorkout }) => {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          'Authorization': `Bearer ${user.token}`
         },
+        credentials: 'include',
         body: JSON.stringify(workout)
       });
       json = await response.json()
@@ -58,8 +58,8 @@ const WorkoutForm = ({ editWorkout, setEditWorkout }) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
         },
+        credentials: 'include',
         body: JSON.stringify(workout),
       });
       json = await response.json();

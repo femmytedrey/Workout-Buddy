@@ -15,9 +15,7 @@ const Home = () => {
       setLoading(true);
       try {
         const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/workouts`, {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
+          credentials: 'include'
         });
         const json = await response.json();
 

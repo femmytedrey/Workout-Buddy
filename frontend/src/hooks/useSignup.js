@@ -10,13 +10,17 @@ export const useSignup = () => {
     setIsLoading(true);
     setError(null);
 
-    const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/user/signup`, {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_BASE_URL}/api/user/signup`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ email, password }),
+      }
+    );
 
     const json = await response.json();
 
@@ -26,8 +30,9 @@ export const useSignup = () => {
     }
 
     if (response.ok) {
-      localStorage.setItem("user", JSON.stringify(json));
-      dispatch({ type: "LOGIN", payload: json });
+      //localStorage.setItem("user", JSON.stringify(json));
+      const userInfo = { email: json.email };
+      dispatch({ type: "LOGIN", payload: userInfo });
       setIsLoading(false);
       setError(null);
     }
