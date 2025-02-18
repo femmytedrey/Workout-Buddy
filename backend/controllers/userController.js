@@ -5,6 +5,8 @@ const createToken = (_id) => {
   return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "3d" });
 };
 
+const isProduction = process.env.NODE_ENV === "production";
+
 //login user
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -17,7 +19,7 @@ const loginUser = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       maxAge: 3 * 24 * 60 * 60 * 1000,
-      secure: false,
+      secure: isProduction,
       sameSite: "Strict",
     });
 
@@ -38,7 +40,7 @@ const signupUser = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       maxAge: 3 * 24 * 60 * 60 * 1000,
-      secure: false,
+      secure: isProduction,
       sameSite: "Strict",
     });
 
@@ -62,7 +64,7 @@ const logoutUser = (req, res) => {
 const checkAuth = async (req, res) => {
   const token = req.cookies.token;
   if (!token) {
-    return res.status(401).json({ error: 'No token found' });
+    return res.status(401).json({ error: "No token found" });
   }
   if (token) {
     try {
