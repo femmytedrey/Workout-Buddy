@@ -21,7 +21,6 @@ const loginUser = async (req, res) => {
       maxAge: 3 * 24 * 60 * 60 * 1000,
       secure: isProduction,
       sameSite: "None",
-      domain: isProduction ? ".mini-workout-buddy.vercel.app" : undefined,
     });
 
     res.status(200).json({ email: user.email });
@@ -43,7 +42,6 @@ const signupUser = async (req, res) => {
       maxAge: 3 * 24 * 60 * 60 * 1000,
       secure: isProduction,
       sameSite: "None",
-      domain: isProduction ? ".mini-workout-buddy.vercel.app" : undefined,
     });
 
     // res.status(201).json({email, user});
@@ -58,7 +56,7 @@ const logoutUser = (req, res) => {
     httpOnly: true,
     expires: new Date(0),
     sameSite: "None",
-    domain: isProduction ? ".mini-workout-buddy.vercel.app" : undefined,
+    domain: isProduction ? "mini-workout-buddy.vercel.app" : undefined,
     path: "/",
   });
   res.status(200).json({ message: "Logged out successfully" });
