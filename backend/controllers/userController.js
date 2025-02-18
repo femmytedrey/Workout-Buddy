@@ -56,7 +56,6 @@ const logoutUser = (req, res) => {
     httpOnly: true,
     expires: new Date(0),
     sameSite: "None",
-    domain: isProduction ? "mini-workout-buddy.vercel.app" : undefined,
     path: "/",
   });
   res.status(200).json({ message: "Logged out successfully" });

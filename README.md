@@ -1,5 +1,5 @@
 # **Workout Buddy 🏋️‍**
-![Workout Buddy](./ui/Screenshot%20(10).png)
+![Workout Buddy](./ui/workoutbuddy.jpeg)
 
 A MERN stack application that allows users to create and track their workouts.
 This project demonstrates the implementation of user authentication, CRUD operations, and containerization using Docker.
