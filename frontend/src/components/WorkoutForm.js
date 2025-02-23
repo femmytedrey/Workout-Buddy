@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { useMutation } from "@tanstack/react-query";
 
 const WorkoutForm = ({ editWorkout, setEditWorkout }) => {
   const { dispatch } = useWorkoutsContext();
@@ -10,6 +11,81 @@ const WorkoutForm = ({ editWorkout, setEditWorkout }) => {
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
   const { user } = useAuthContext();
+
+  const createWorkout = async (workout) => {
+    const response = await fetch(
+      `${process.env.REACT_APP_BASE_URL}/api/workouts`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(workout),
+      }
+    );
+    const json = await response.json();
+
+    if (!response.ok) {
+      throw { error: json.error, emptyFields: json.emptyFields };
+    }
+
+    return json;
+  };
+
+  const updateWorkout = async ({ id, workout }) => {
+    const response = await fetch(
+      `${process.env.REACT_APP_BASE_URL}/api/workouts/${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(workout),
+      }
+    );
+    const json = await response.json();
+
+    if (!response.ok) {
+      throw { error: json.error, emptyFields: json.emptyFields };
+    }
+
+    return json;
+  };
+
+  const {
+    mutate: create,
+    isLoading: isCreating,
+    error: createError,
+  } = useMutation({
+    mutationFn: createWorkout,
+    onSuccess: (data) => {
+      dispatch({ type: "CREATE_WORKOUT", payload: data });
+      setTitle("");
+      setLoad("");
+      setReps("");
+      setEmptyFields([]);
+    },
+    onError: (error) => {
+      setEmptyFields(error.emptyFields || []);
+    },
+  });
+
+  const {
+    mutate: update,
+    isLoading: isUpdating,
+    error: updateError,
+  } = useMutation({
+    mutationFn: updateWorkout,
+    onSuccess: (data) => {
+      dispatch({ type: "UPDATE_WORKOUT", payload: data });
+      setEditWorkout(null);
+    },
+    onError: (error) => {
+      setEmptyFields(error.emptyFields || []);
+    },
+  });
 
   useEffect(() => {
     if (editWorkout) {
@@ -31,57 +107,16 @@ const WorkoutForm = ({ editWorkout, setEditWorkout }) => {
     }
     const workout = { title, load, reps };
 
-    let response;
-    let json;
     if (editWorkout) {
-      response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/workouts/${editWorkout._id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: 'include',
-        body: JSON.stringify(workout)
-      });
-      json = await response.json()
-
-      if(!response.ok){
-        setError(json.error)
-        setEmptyFields(json.emptyFields || [])
-      }
-
-      if(response.ok){
-        dispatch({type: 'UPDATE_WORKOUT', payload: json})
-        setEditWorkout(null)
-      }
+      update({ id: editWorkout._id, workout });
     } else {
-      response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/workouts`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: 'include',
-        body: JSON.stringify(workout),
-      });
-      json = await response.json();
-
-      if (!response.ok) {
-        setError(json.error);
-        setEmptyFields(json.emptyFields || []);
-      }
-
-      if (response.ok) {
-        setTitle("");
-        setLoad("");
-        setReps("");
-        setError(null);
-        setEmptyFields([]);
-        dispatch({ type: "CREATE_WORKOUT", payload: json });
-      }
+      create(workout);
     }
   };
+
   return (
     <form className="create" onSubmit={handleSubmit}>
-      <h3>{editWorkout ? 'Update Workout' : 'Add a new workout'}</h3>
+      <h3>{editWorkout ? "Update Workout" : "Add a new workout"}</h3>
 
       <label>Exercise Title:</label>
       <input
@@ -107,8 +142,18 @@ const WorkoutForm = ({ editWorkout, setEditWorkout }) => {
         className={emptyFields.includes("reps") ? "error" : ""}
       />
 
-      <button>{editWorkout ? 'Update workout' : 'Add workout'}</button>
-      {error && <div className="error">{error}</div>}
+      <button disabled={isCreating || isUpdating}>
+        {isCreating
+          ? "Adding..."
+          : isUpdating
+          ? "Updating..."
+          : editWorkout
+          ? "Update workout"
+          : "Add workout"}
+      </button>
+      {(createError || updateError) && (
+        <div className="error">{createError?.error || updateError?.error}</div>
+      )}
     </form>
   );
 };

@@ -1,38 +1,37 @@
+import { useMutation } from "@tanstack/react-query";
 import { useAuthContext } from "./useAuthContext";
-import { useState } from "react";
+
+const login = async ({email, password}) => {
+  const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/user/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: 'include',
+    body: JSON.stringify({ email, password }),
+  });
+
+  const json = await response.json();
+
+  if (!response.ok) {
+    throw new Error(json.error)
+  }
+
+  return json;
+};
 
 export const useLogin = () => {
-  const [isLoading, setIsLoading] = useState(null);
-  const [error, setError] = useState(null);
   const { dispatch } = useAuthContext();
 
-  const login = async (email, password) => {
-    setIsLoading(true);
-    setError(null);
-    const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/user/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: 'include',
-      body: JSON.stringify({ email, password }),
-    });
+  
 
-    const json = await response.json();
-
-    if (!response.ok) {
-      setIsLoading(false);
-      setError(json.error);
+  return useMutation({
+    mutationFn: login,
+    onSuccess: (data) => {
+      dispatch({ type: "LOGIN", payload: { email: data.email } });
+    },
+    onError: (error) => {
+      console.log(error);
     }
-
-    if (response.ok) {
-      //localStorage.setItem("user", JSON.stringify(json));
-      const userInfo = { email: json.email };
-      dispatch({ type: "LOGIN", payload: userInfo });
-      setIsLoading(false);
-      setError(null);
-    }
-  };
-
-  return { login, isLoading, error };
+  });
 };

@@ -6,7 +6,7 @@ export const workoutsReducer = (state, action) => {
   switch (action.type) {
     case "SET_WORKOUTS":
       return {
-        workouts: action.payload,
+        workouts: action.payload || [],
       };
     case "CREATE_WORKOUT":
       return {
@@ -18,8 +18,10 @@ export const workoutsReducer = (state, action) => {
       };
     case "UPDATE_WORKOUT":
       return {
-        workouts: state.workouts.map((w) => w._id === action.payload._id ? action.payload : w)
-      }
+        workouts: state.workouts.map((w) =>
+          w._id === action.payload._id ? action.payload : w
+        ),
+      };
     default:
       return state;
   }

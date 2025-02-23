@@ -4,10 +4,15 @@ import { useAuthContext } from "../hooks/useAuthContext";
 
 const Navbar = () => {
   const { user } = useAuthContext();
-  const { logout } = useLogout();
+  const { mutate: logout, isLoading, isError, error } = useLogout();
+  
   const handleLogout = () => {
     logout();
+    if(isError){
+      alert(error?.message || "Failed to logout. Please try again.")
+    }
   };
+  
   return (
     <header>
       <div className="container">
@@ -18,7 +23,9 @@ const Navbar = () => {
           {user && (
             <div className="logout-container">
               <span>{user.email}</span>
-              <button onClick={handleLogout}>Logout</button>
+              <button onClick={handleLogout} disabled={isLoading}>
+                {isLoading ? "Logging out..." : "Logout"}
+              </button>
             </div>
           )}
           {!user && (

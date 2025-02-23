@@ -4,11 +4,11 @@ import { useSignup } from "../hooks/useSignup";
 const Signup = () => {
   const [email, SetEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { signup, error, isLoading } = useSignup();
+  const { mutate: signup, isLoading, isError, error } = useSignup();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    await signup(email, password);
+    signup({ email, password });
   };
   return (
     <form className="signup" onSubmit={handleSubmit}>
@@ -31,7 +31,7 @@ const Signup = () => {
       <button disabled={isLoading}>
         {isLoading ? "Signing up...." : "Sign up"}
       </button>
-      {error && <div className="error">{error}</div>}
+      {isError && <div className="error">{error.message}</div>}
     </form>
   );
 };
