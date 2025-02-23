@@ -21,6 +21,7 @@ const loginUser = async (req, res) => {
       maxAge: 3 * 24 * 60 * 60 * 1000,
       secure: isProduction,
       sameSite: "None",
+      path: "/",
     });
 
     res.status(200).json({ email: user.email });
@@ -42,6 +43,7 @@ const signupUser = async (req, res) => {
       maxAge: 3 * 24 * 60 * 60 * 1000,
       secure: isProduction,
       sameSite: "None",
+      path: "/",
     });
 
     // res.status(201).json({email, user});
