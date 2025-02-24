@@ -8,7 +8,6 @@ const WorkoutForm = ({ editWorkout, setEditWorkout }) => {
   const [title, setTitle] = useState("");
   const [load, setLoad] = useState("");
   const [reps, setReps] = useState("");
-  const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
   const { user } = useAuthContext();
 
@@ -102,7 +101,6 @@ const WorkoutForm = ({ editWorkout, setEditWorkout }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user) {
-      setError("You must be logged in");
       return;
     }
     const workout = { title, load, reps };

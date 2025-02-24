@@ -20,8 +20,7 @@ const loginUser = async (req, res) => {
       httpOnly: true,
       maxAge: 3 * 24 * 60 * 60 * 1000,
       secure: isProduction,
-      sameSite: "None",
-      path: "/",
+      sameSite: isProduction ? "None" : "Strict",
     });
 
     res.status(200).json({ email: user.email });
@@ -42,8 +41,7 @@ const signupUser = async (req, res) => {
       httpOnly: true,
       maxAge: 3 * 24 * 60 * 60 * 1000,
       secure: isProduction,
-      sameSite: "None",
-      path: "/",
+      sameSite: isProduction ? "None" : "Strict",
     });
 
     // res.status(201).json({email, user});
@@ -57,7 +55,7 @@ const logoutUser = (req, res) => {
   res.cookie("token", "", {
     httpOnly: true,
     expires: new Date(0),
-    sameSite: "None",
+    sameSite: isProduction ? "None" : "Strict",
     path: "/",
   });
   res.status(200).json({ message: "Logged out successfully" });
