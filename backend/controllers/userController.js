@@ -23,7 +23,7 @@ const loginUser = async (req, res) => {
       sameSite: isProduction ? "None" : "Strict",
     });
 
-    res.status(200).json({ email: user.email });
+    res.status(200).json({ email: user.email, token: token });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -45,7 +45,7 @@ const signupUser = async (req, res) => {
     });
 
     // res.status(201).json({email, user});
-    res.status(201).json({ email: user.email });
+    res.status(201).json({ email: user.email, token: token });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -55,6 +55,7 @@ const logoutUser = (req, res) => {
   res.cookie("token", "", {
     httpOnly: true,
     expires: new Date(0),
+    secure: isProduction,
     sameSite: isProduction ? "None" : "Strict",
     path: "/",
   });
