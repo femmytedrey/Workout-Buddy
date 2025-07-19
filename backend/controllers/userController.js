@@ -63,7 +63,8 @@ const logoutUser = (req, res) => {
 };
 
 const checkAuth = async (req, res) => {
-  const token = req.cookies.token;
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(" ")[1];
   if (!token) {
     return res.status(401).json({ error: "No token found" });
   }
