@@ -90,12 +90,37 @@ const googleAuthSuccess = async (req, res) => {
       maxAge: 3 * 24 * 60 * 60 * 1000,
       secure: isProduction,
       sameSite: isProduction ? "None" : "Strict",
-      path: '/'
+      path: "/",
     });
 
-    res.redirect(`${process.env.CLIENT_URL}?auth=success`);
+    res.redirect(`${process.env.CLIENT_URL}/login?auth=success&token=${token}`);
   } catch (error) {
     res.redirect(`${process.env.CLIENT_URL}/login?error=token_failed`);
+  }
+};
+
+const setTokenCookie = async (req, res) => {
+  const { token } = req.body;
+
+  if (!token) {
+    return res.status(400).json({ error: "No token provided" });
+  }
+
+  try {
+    // Verify the token is valid before setting cookie
+    jwt.verify(token, process.env.SECRET);
+
+    // Set cookie with same settings as loginUser
+    res.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 3 * 24 * 60 * 60 * 1000,
+      secure: isProduction,
+      sameSite: isProduction ? "None" : "Strict",
+    });
+
+    res.status(200).json({ success: true });
+  } catch (error) {
+    res.status(401).json({ error: "Invalid token" });
   }
 };
 
@@ -113,4 +138,5 @@ module.exports = {
   checkAuth,
   googleAuthSuccess,
   googleAuthFailure,
+  setTokenCookie,
 };

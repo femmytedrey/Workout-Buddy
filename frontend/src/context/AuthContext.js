@@ -28,6 +28,24 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get("token");
+        const authStatus = urlParams.get("auth");
+
+        if (token && authStatus === "success") {
+          await fetch(
+            `${process.env.REACT_APP_BASE_URL}/api/user/set-token-cookie`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              credentials: "include",
+              body: JSON.stringify({ token }),
+            }
+          );
+
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
         const response = await fetch(
           `${process.env.REACT_APP_BASE_URL}/api/user/check-auth`,
           {
@@ -55,7 +73,6 @@ export const AuthContextProvider = ({ children }) => {
   return (
     <AuthContext.Provider value={{ ...state, dispatch }}>
       {children}
-      {/* children */}
     </AuthContext.Provider>
   );
 };

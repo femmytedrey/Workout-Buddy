@@ -9,6 +9,7 @@ const {
   checkAuth,
   googleAuthFailure,
   googleAuthSuccess,
+  setTokenCookie
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -48,6 +49,8 @@ router.get(
   },
   googleAuthSuccess
 );
+
+router.post('/set-token-cookie', setTokenCookie);
 
 //failed OAuth route
 router.get("/failure", googleAuthFailure);
