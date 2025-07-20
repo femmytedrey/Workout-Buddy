@@ -28,12 +28,24 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
+        const savedToken = localStorage.getItem("authToken");
+
+        const options = {
+          credentials: "include",
+        };
+
+        // Add Authorization header if we have a saved token (for iOS)
+        if (savedToken) {
+          options.headers = {
+            Authorization: `Bearer ${savedToken}`,
+          };
+        }
+
         const response = await fetch(
           `${process.env.REACT_APP_BASE_URL}/api/user/check-auth`,
-          {
-            credentials: "include",
-          },
+          options
         );
+
         if (response.ok) {
           const user = await response.json();
           dispatch({ type: "LOGIN", payload: user });
