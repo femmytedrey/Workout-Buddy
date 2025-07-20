@@ -98,6 +98,11 @@ input {
   border-radius: 4px;
   box-sizing: border-box;
 }
+form .login-btn-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 form button {
   background: var(--primary);
   border: 0;
@@ -107,6 +112,56 @@ form button {
   border-radius: 4px;
   cursor: pointer;
 }
+form .google-login-btn{
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  background-color: transparent;
+  border: 1px solid var(--primary);
+  color: black;
+  transition: ease-in-out 0.2s;
+}
+
+form .google-login-btn:hover{
+  background-color: rgb(231, 255, 231);
+}
+
+.success {
+  color: green;
+  background: #d4edda;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.divider {
+  text-align: center;
+  margin: 1rem 0;
+  position: relative;
+}
+
+.divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: #ddd;
+  z-index: 1;
+}
+
+.divider span {
+  background-color: white;
+  padding: 0 1rem;
+  color: #666;
+  font-size: 0.9rem;
+  position: relative;
+  z-index: 2;
+  font-weight: 500;
+}
+
+
 div.error {
   padding: 10px;
   background: #ffefef;

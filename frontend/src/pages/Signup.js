@@ -1,15 +1,27 @@
 import { useState } from "react";
 import { useSignup } from "../hooks/useSignup";
+import useOAuth from "../hooks/useOAuth";
+import { GoogleIcon } from "../components/GoogleIcon";
 
 const Signup = () => {
   const [email, SetEmail] = useState("");
   const [password, setPassword] = useState("");
   const { mutate: signup, isLoading, isError, error } = useSignup();
 
+  const {
+    loginWithGoogle,
+    isLoading: isGoogleLoading,
+    error: oauthError,
+    authSuccess,
+  } = useOAuth();
+
   const handleSubmit = (e) => {
     e.preventDefault();
     signup({ email, password });
   };
+
+  const displayError = isError ? error.message : oauthError;
+
   return (
     <form className="signup" onSubmit={handleSubmit}>
       <h3>Sign up</h3>
@@ -28,10 +40,31 @@ const Signup = () => {
         value={password}
       />
 
-      <button disabled={isLoading}>
-        {isLoading ? "Signing up...." : "Sign up"}
-      </button>
-      {isError && <div className="error">{error.message}</div>}
+      <div className="login-btn-container">
+        <button disabled={isLoading}>
+          {isLoading ? "Logging in..." : "Login"}
+        </button>
+
+        <div className="divider">
+          <span>or</span>
+        </div>
+
+        <button
+          type="button"
+          onClick={loginWithGoogle}
+          className="google-login-btn"
+        >
+          <GoogleIcon />
+          {isGoogleLoading ? "Signing in with Google" : "Sign in with Google"}
+        </button>
+      </div>
+
+      {authSuccess && (
+        <div className="success">
+          Login successful! You will be redirected shortly.
+        </div>
+      )}
+      {displayError && <div className="error">{displayError}</div>}
     </form>
   );
 };
