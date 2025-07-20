@@ -21,6 +21,7 @@ const loginUser = async (req, res) => {
       maxAge: 3 * 24 * 60 * 60 * 1000,
       secure: isProduction,
       sameSite: isProduction ? "None" : "Strict",
+      path: "/",
     });
 
     res.status(200).json({ email: user.email, token: token });
@@ -42,6 +43,7 @@ const signupUser = async (req, res) => {
       maxAge: 3 * 24 * 60 * 60 * 1000,
       secure: isProduction,
       sameSite: isProduction ? "None" : "Strict",
+      path: "/"
     });
 
     // res.status(201).json({email, user});
@@ -63,8 +65,7 @@ const logoutUser = (req, res) => {
 };
 
 const checkAuth = async (req, res) => {
-  const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(" ")[1];
+  const token = req.cookies.token;
   if (!token) {
     return res.status(401).json({ error: "No token found" });
   }

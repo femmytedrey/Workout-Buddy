@@ -32,7 +32,7 @@ export const AuthContextProvider = ({ children }) => {
           `${process.env.REACT_APP_BASE_URL}/api/user/check-auth`,
           {
             credentials: "include",
-          }
+          },
         );
         if (response.ok) {
           const user = await response.json();
