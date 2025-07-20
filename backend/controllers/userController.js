@@ -80,9 +80,36 @@ const checkAuth = async (req, res) => {
   }
 };
 
+const googleAuthSuccess = async (req, res) => {
+  try {
+    const user = req.user;
+    const token = createToken(user._id);
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 3 * 24 * 60 * 60 * 1000,
+      secure: isProduction,
+      sameSite: isProduction ? "None" : "Strict",
+    });
+
+    res.redirect(`${process.env.CLIENT_URL}?auth=success`);
+  } catch (error) {
+    res.redirect(`${process.env.CLIENT_URL}/login?error=token_failed`);
+  }
+};
+
+const googleAuthFailure = (req, res) => {
+  const errorMessage = req.query.error || "Authentication failed";
+  res.redirect(
+    `${process.env.CLIENT_URL}/login?error=${encodeURIComponent(errorMessage)}`
+  );
+};
+
 module.exports = {
   loginUser,
   signupUser,
   logoutUser,
   checkAuth,
+  googleAuthSuccess,
+  googleAuthFailure,
 };
