@@ -88,9 +88,9 @@ const googleAuthSuccess = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       maxAge: 3 * 24 * 60 * 60 * 1000,
-      secure: false,
-      sameSite: isProduction ? "Lax" : "Strict",
-      path: "/",
+      secure: isProduction,
+      sameSite: isProduction ? "None" : "Strict",
+      path: '/'
     });
 
     res.redirect(`${process.env.CLIENT_URL}?auth=success`);
