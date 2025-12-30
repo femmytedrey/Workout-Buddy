@@ -1,4 +1,5 @@
 # **Workout Buddy 🏋️‍**
+![Tests](https://github.com/femmytedrey/Workout-Buddy/actions/workflows/test.yml/badge.svg)
 ![Workout Buddy](./ui/workoutbuddy.jpeg)
 
 A MERN stack application that allows users to create and track their workouts.
