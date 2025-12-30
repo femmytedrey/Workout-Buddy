@@ -21,6 +21,11 @@ jobs:
       MONGODB_URI: mongodb://127.0.0.1:27017/workout-test
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
       NODE_ENV: test
+      GOOGLE_CLIENT_ID: dummy-test-id
+      GOOGLE_CLIENT_SECRET: dummy-test-secret
+      GOOGLE_CALLBACK_URL: http://localhost:4000/api/user/google/callback
+      PORT: 4000
+      CLIENT_URL: http://localhost:3000
 
     defaults:
       run:
