@@ -10,6 +10,10 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    # strategy:
+    #   matrix:
+    #     test-file: ['auth.test.js', 'workout.test.js']
+
     services:
       mongo:
         image: mongo:6.0
@@ -55,24 +59,27 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # Step 4: Run tests
+      - name: Run tests with coverage
+        run: npm run test:coverage
+
       # Upload coverage result
-      - name: Upload coverage reports
+      - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
           files: ./backend/coverage/coverage-final.json
           flags: backend
           fail_ci_if_error: false
 
-      # Step 4: Run tests
-      - name: Run tests with coverage
-        run: npm run test:coverage
-
-      # Add to your workflow after "Run tests"
-      - name: Generate coverage report
-        run: npm test -- --coverage
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          files: ./backend/coverage/coverage-final.json
-          flags: backend
+    deploy:
+    needs: test  # Only run if test job passes
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'  # Only on main branch
+    
+    steps:
+      - name: Trigger Vercel Deploy
+        run: |
+          curl -X POST ${{ secrets.VERCEL_DEPLOY_HOOK }}
+      
+      - name: Deployment triggered
+        run: echo "✅ Deployment triggered successfully!"
