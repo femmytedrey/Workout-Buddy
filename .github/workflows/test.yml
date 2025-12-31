@@ -72,14 +72,14 @@ jobs:
           fail_ci_if_error: false
 
     deploy:
-    needs: test  # Only run if test job passes
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'  # Only on main branch
-    
-    steps:
-      - name: Trigger Vercel Deploy
-        run: |
-          curl -X POST ${{ secrets.VERCEL_DEPLOY_HOOK }}
+      needs: test  # Only run if test job passes
+      runs-on: ubuntu-latest
+      if: github.ref == 'refs/heads/main'  # Only on main branch
       
-      - name: Deployment triggered
-        run: echo "✅ Deployment triggered successfully!"
+      steps:
+        - name: Trigger Vercel Deploy
+          run: |
+            curl -X POST ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        
+        - name: Deployment triggered
+          run: echo "✅ Deployment triggered successfully!"
