@@ -77,9 +77,13 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push' # Only on main branch
     
     steps:
-      - name: Trigger Vercel Deploy
-        run: |
-          curl -X POST ${{ secrets.VERCEL_DEPLOY_HOOK }}
+      - name: Checkout code
+        uses: actions/checkout@v3
       
-      - name: Deployment triggered
-        run: echo "✅ Deployment triggered successfully!"
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
