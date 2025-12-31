@@ -36,7 +36,7 @@ app.use((req, res, next) => {
 
 //routes
 app.get("/", (req, res) => {
-  res.json({ mssg: "Welcome to the application" });
+  res.json({ mssg: "Welcome to the workout application" });
 });
 app.use("/api/workouts", workoutRoutes);
 app.use("/api/user", userRoutes);
