@@ -74,12 +74,12 @@ jobs:
   deploy:
     needs: test  # Only run if test job passes
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push' # Only on main branch
-    
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
+
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v25
         with:
