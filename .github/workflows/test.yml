@@ -42,6 +42,15 @@ jobs:
         with:
           node-version: "18"
 
+      #Dependency caching
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: backend/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('backend/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       # Step 3: Install dependencies
       - name: Install dependencies
         run: npm install
@@ -49,3 +58,13 @@ jobs:
       # Step 4: Run tests
       - name: Run tests
         run: npm test
+
+      # Add to your workflow after "Run tests"
+      - name: Generate coverage report
+        run: npm test -- --coverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./backend/coverage/coverage-final.json
+          flags: backend

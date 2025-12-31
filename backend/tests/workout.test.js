@@ -33,8 +33,6 @@ describe("Workout API test", () => {
         .set("Cookie", `token=${authToken}`)
         .timeout(15000);
 
-      console.log(response.body);
-
       expect(response.status).toBe(201);
     });
 
