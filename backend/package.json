@@ -8,16 +8,6 @@
     "test:watch": "cross-env NODE_ENV=test jest --watch --runInBand",
     "test:coverage": "cross-env NODE_ENV=test jest --coverage --runInBand --forceExit"
   },
-  "jest": {
-    "testEnvironment": "node",
-    "setupFilesAfterEnv": [
-      "<rootDir>/tests/setup.js"
-    ],
-    "testTimeout": 10000,
-    "coveragePathIgnorePatterns": [
-      "/node_modules/"
-    ]
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
