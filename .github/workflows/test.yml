@@ -55,9 +55,17 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # Upload coverage result
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./backend/coverage/coverage-final.json
+          flags: backend
+          fail_ci_if_error: false
+
       # Step 4: Run tests
-      - name: Run tests
-        run: npm test
+      - name: Run tests with coverage
+        run: npm run test:coverage
 
       # Add to your workflow after "Run tests"
       - name: Generate coverage report
