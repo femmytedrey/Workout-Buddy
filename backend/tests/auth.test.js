@@ -28,7 +28,7 @@ describe("Authentication API", () => {
         .post(AUTH_ENDPOINTS.signup)
         .send(userData);
 
-      expect(response.status).toBe(201);
+      expect(response.status).toBe(999);
       expect(response.body).toHaveProperty("email", userData.email);
       expect(response.body).toHaveProperty("token");
       expect(typeof response.body.token).toBe("string");
