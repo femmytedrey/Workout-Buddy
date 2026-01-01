@@ -12,7 +12,7 @@ describe("GET /", () => {
   test("check if api is live", async () => {
     const response = await request(app).get("/");
 
-    expect(response.body.mssg).toBe("Welcome to the workout application");
+    expect(response.body.mssg).toBe("Welcome to the application");
   });
 });
 
