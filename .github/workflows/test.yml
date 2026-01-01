@@ -72,23 +72,17 @@ jobs:
           fail_ci_if_error: false
 
   deploy:
-    needs: test  # Only run if test job passes
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-
-    defaults:
-      run:
-        working-directory: backend
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
-          working-directory: backend
+  needs: test
+  runs-on: ubuntu-latest
+  if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+  
+  steps:
+    - name: Trigger Vercel Deploy via Hook
+      run: |
+        curl -X POST ${{ secrets.VERCEL_DEPLOY_HOOK }}
+    
+    - name: Wait for deployment
+      run: sleep 10
+    
+    - name: Deployment triggered
+      run: echo "✅ Vercel deployment triggered!"
